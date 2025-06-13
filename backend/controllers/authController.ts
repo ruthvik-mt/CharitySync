@@ -14,7 +14,12 @@ const generateToken = (userId: string) => {
 // REGISTER
 export const registerUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { email, password } = req.body;
+    const { name, email, password } = req.body;
+
+    if (!name || !email || !password) {
+      res.status(400).json({ error: "Name, email, and password are required" });
+      return;
+    }
 
     const existing = await User.findOne({ email });
     if (existing) {
@@ -22,16 +27,16 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
       return;
     }
 
-    // Hash password before saving
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = new User({ email, password: hashedPassword });
+    const user = new User({ name, email, password: hashedPassword }); // Include name
     await user.save();
 
     const token = generateToken(user._id.toString());
     res.status(201).json({ token });
-  } catch (error) {
-    res.status(500).json({ error: "Registration failed", details: error });
+  } catch (error: any) {
+    console.error("Registration error:", error);
+    res.status(500).json({ error: "Registration failed", details: error.message });
   }
 };
 
