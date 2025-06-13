@@ -10,26 +10,30 @@ dotenv.config();
 
 const app = express();
 
-// Middleware
-app.use(cors());
+// CORS configuration to allow frontend (localhost:3000) to access backend
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true,
+}));
+
 app.use(express.json());
 
-// Logger (for development/debugging)
+// Logger middleware
 app.use((req: Request, _res: Response, next: NextFunction) => {
   console.log(`[${req.method}] ${req.path}`);
   next();
 });
 
-// Routes
+// API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/campaigns", campaignRoutes);
 
-// Health check route
+// Health check
 app.get("/", (_req: Request, res: Response) => {
   res.send("API is running...");
 });
 
-// Connect to MongoDB and start server
+// MongoDB connection + server start
 const startServer = async () => {
   try {
     const MONGO_URI = process.env.MONGO_URI;
@@ -44,7 +48,7 @@ const startServer = async () => {
     });
   } catch (error) {
     console.error("MongoDB connection error:", error);
-    process.exit(1); // Exit with failure
+    process.exit(1);
   }
 };
 
