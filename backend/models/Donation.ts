@@ -1,12 +1,24 @@
 import mongoose from 'mongoose';
 
-const DonationSchema = new mongoose.Schema({
-  campaignId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Campaign'
+const donationSchema = new mongoose.Schema(
+  {
+    campaign: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Campaign',
+      required: true,
+    },
+    donor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
+    amount: {
+      type: Number,
+      required: true,
+    },
   },
-  donorName: String,
-  amount: Number,
-}, { timestamps: true });
+  { timestamps: true }
+);
 
-export default mongoose.model('Donation', DonationSchema);
+const Donation = mongoose.model('Donation', donationSchema);
+export default Donation;

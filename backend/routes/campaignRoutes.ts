@@ -6,18 +6,25 @@ import {
   getCampaignById,
   deleteCampaign,
   updateCampaignAmount,
+  submitCharityCampaign,
 } from "../controllers/campaignController";
-import { authenticateToken } from "../middleware/authMiddleware";
+import { protect, isAdmin, } from "../middleware/authMiddleware";
 
 const router = express.Router();
 
 // Public Routes
-router.get("/", getCampaigns);            // GET all campaigns - /api/campaigns
-router.get("/:id", getCampaignById);      // GET campaign by ID - /api/campaigns/:id
+router.get("/", getCampaigns);                  // GET all campaigns - /api/campaigns
+
+// Place static routes before dynamic ones
+router.post("/submit-charity", submitCharityCampaign);
+
+router.get("/:id", getCampaignById);            // GET campaign by ID - /api/campaigns/:id
 
 // Protected Routes
-router.post("/", authenticateToken, createCampaign);               // POST new campaign
-router.patch("/:id/donate", authenticateToken, updateCampaignAmount); // Donate to campaign
-router.delete("/:id", authenticateToken, deleteCampaign);          // Delete campaign
+router.post("/", protect, createCampaign);                    // POST new campaign
+router.patch("/:id/donate", protect, updateCampaignAmount);   // Donate to campaign
+router.delete("/:id", protect, isAdmin, deleteCampaign); 
+
+   // Delete campaign (admin only)
 
 export default router;

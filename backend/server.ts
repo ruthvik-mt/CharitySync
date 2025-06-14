@@ -5,6 +5,8 @@ import dotenv from "dotenv";
 import cors from "cors";
 import campaignRoutes from "./routes/campaignRoutes";
 import authRoutes from "./routes/authRoutes";
+import donationRoutes from './routes/donationRoutes';
+import adminRoutes from "./routes/adminRoutes";
 
 dotenv.config();
 
@@ -27,6 +29,9 @@ app.use((req: Request, _res: Response, next: NextFunction) => {
 // API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/campaigns", campaignRoutes);
+app.use('/api/donations', donationRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/admin", adminRoutes);
 
 // Health check
 app.get("/", (_req: Request, res: Response) => {

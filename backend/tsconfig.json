@@ -6,8 +6,9 @@
     "outDir": "dist",
     "strict": true,
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "typeRoots": ["./types", "./node_modules/@types"] // ✅ Add this line
   },
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", "types"], // ✅ Add "types" here to include your type extensions
   "exclude": ["node_modules"]
 }

@@ -81,3 +81,35 @@ export const updateCampaignAmount = async (req: Request, res: Response): Promise
     res.status(500).json({ message: 'Error updating campaign amount', error });
   }
 };
+
+// Submit a charity campaign
+export const submitCharityCampaign = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { charityName, contactEmail, title, description, goalAmount, imageUrl } = req.body;
+
+    if (!charityName || !contactEmail || !title || !description || !goalAmount) {
+      res.status(400).json({ message: "Missing required fields" });
+      return;
+    }
+
+    const newC = new Campaign({
+      charityName,
+      contactEmail,
+      title,
+      description,
+      goalAmount,
+      imageUrl,
+      approved: false,
+      createdByCharity: true,
+      amountRaised: 0,
+    });
+
+    const saved = await newC.save();
+    res.status(201).json({ message: "Submitted — awaiting approval", campaign: saved });
+
+  } catch (error) {
+    console.error("Charity campaign submission error:", error);
+    res.status(500).json({ message: "Submission error", error });
+  }
+};
+

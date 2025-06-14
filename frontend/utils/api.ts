@@ -1,58 +1,3 @@
-// // frontend/utils/api.ts
-// import axios from "axios";
-
-// // ✅ Proper base URL setup
-// const API_BASE_URL: string = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
-
-// // ✅ Create a reusable axios instance
-// const apiClient = axios.create({
-//   baseURL: API_BASE_URL,
-//   headers: {
-//     "Content-Type": "application/json",
-//   },
-// });
-
-// // ✅ Optional: Handle and log API errors
-// const handleApiError = (error: any) => {
-//   console.error("API error:", error?.response?.data || error.message);
-//   throw error;
-// };
-
-// // ✅ Interface (if needed for TypeScript, adjust as per your schema)
-// export interface Campaign {
-//   _id: string;
-//   title: string;
-//   description: string;
-//   goal: number;
-//   // Add other fields if needed
-// }
-
-// // ✅ API methods
-// const api = {
-//   // Get all campaigns
-//   fetchCampaigns: async () => {
-//     try {
-//       const response = await apiClient.get("/api/campaigns");
-//       return response.data;
-//     } catch (error) {
-//       handleApiError(error);
-//     }
-//   },
-
-//   // Get a single campaign by ID
-//   fetchCampaignById: async (id: string) => {
-//     try {
-//       const response = await apiClient.get(`/api/campaigns/${id}`);
-//       return response.data;
-//     } catch (error) {
-//       handleApiError(error);
-//     }
-//   },
-// };
-
-// export default api;
-
-// frontend/utils/api.ts
 import axios from "axios";
 
 // ✅ Base API URL
@@ -88,8 +33,11 @@ export interface Campaign {
   _id: string;
   title: string;
   description: string;
-  goal: number;
-  // Add other fields if needed
+  goalAmount: number;
+  currentAmount: number;
+  imageUrl?: string;
+  approved: boolean;
+  createdAt: string;
 }
 
 export interface User {
@@ -98,9 +46,8 @@ export interface User {
   password: string;
 }
 
-// ✅ API methods
 const api = {
-  // 🟢 Get all campaigns
+  // ✅ Campaign APIs
   fetchCampaigns: async () => {
     try {
       const response = await apiClient.get("/api/campaigns");
@@ -110,7 +57,6 @@ const api = {
     }
   },
 
-  // 🟢 Get a single campaign
   fetchCampaignById: async (id: string) => {
     try {
       const response = await apiClient.get(`/api/campaigns/${id}`);
@@ -120,7 +66,6 @@ const api = {
     }
   },
 
-  // 🟢 Create a campaign (requires login)
   createCampaign: async (campaignData: Partial<Campaign>) => {
     try {
       const response = await apiClient.post("/api/campaigns", campaignData);
@@ -130,7 +75,35 @@ const api = {
     }
   },
 
-  // 🟢 User registration
+  deleteCampaign: async (id: string) => {
+    try {
+      const res = await apiClient.delete(`/api/admin/campaigns/${id}`);
+      return res.data;
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
+
+  // ✅ Donation APIs
+  donateToCampaign: async (campaignId: string, amount: number) => {
+    try {
+      const response = await apiClient.post(`/api/donations/${campaignId}`, { amount });
+      return response.data;
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
+
+  getUserDonations: async () => {
+    try {
+      const response = await apiClient.get("/api/donations/user");
+      return response.data;
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
+
+  // ✅ Auth APIs
   registerUser: async (userData: User) => {
     try {
       const response = await apiClient.post("/api/auth/register", userData);
@@ -140,7 +113,6 @@ const api = {
     }
   },
 
-  // 🟢 User login
   loginUser: async (credentials: { email: string; password: string }) => {
     try {
       const response = await apiClient.post("/api/auth/login", credentials);
@@ -150,11 +122,66 @@ const api = {
     }
   },
 
-  // 🟢 Get user profile
   getUserProfile: async () => {
     try {
       const response = await apiClient.get("/api/auth/profile");
       return response.data;
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
+
+  // ✅ Admin APIs
+  getAdminStats: async () => {
+    try {
+      const response = await apiClient.get("/api/admin/stats");
+      return response.data;
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
+
+  getAllDonations: async () => {
+    try {
+      const response = await apiClient.get("/api/admin/donations");
+      return response.data;
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
+
+  getCampaignDonationStats: async () => {
+    try {
+      const response = await apiClient.get("/api/admin/campaign-stats");
+      return response.data;
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
+
+  // ✅ Charity Campaign Submission APIs
+  submitCharityCampaign: async (data: Record<string, any>) => {
+    try {
+      const res = await apiClient.post("/api/campaigns/submit-charity", data);
+      return res.data;
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
+
+  getPendingCampaigns: async () => {
+    try {
+      const res = await apiClient.get("/api/admin/pending-campaigns");
+      return res.data;
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
+
+  approveCampaign: async (id: string) => {
+    try {
+      const res = await apiClient.patch(`/api/admin/campaigns/${id}/approve`);
+      return res.data;
     } catch (error) {
       handleApiError(error);
     }
