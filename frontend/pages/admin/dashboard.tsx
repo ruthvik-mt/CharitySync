@@ -42,22 +42,29 @@ export default function AdminDashboard() {
     }
 
     const fetchAdminData = async () => {
-      try {
-        const [statsRes, donationsRes, campaignStatsRes] = await Promise.all([
-          api.getAdminStats(),
-          api.getAllDonations(),
-          api.getCampaignDonationStats(),
-        ]);
+  try {
+    const user = await api.getCurrentUser();
 
-        setStats(statsRes);
-        setDonations(donationsRes);
-        setCampaignStats(campaignStatsRes);
-      } catch (err: any) {
-        setError("Unauthorized or failed to load admin data");
-      } finally {
-        setLoading(false);
-      }
-    };
+    if (user.role !== "admin") {
+      setError("Access denied. Admins only.");
+      return;
+    }
+
+    const [statsRes, donationsRes, campaignStatsRes] = await Promise.all([
+      api.getAdminStats(),
+      api.getAllDonations(),
+      api.getCampaignDonationStats(),
+    ]);
+
+    setStats(statsRes);
+    setDonations(donationsRes);
+    setCampaignStats(campaignStatsRes);
+  } catch (err: any) {
+    setError("Unauthorized or failed to load admin data");
+  } finally {
+    setLoading(false);
+  }
+};
 
     fetchAdminData();
   }, [router]);

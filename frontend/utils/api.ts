@@ -1,9 +1,11 @@
+// utils/api.ts
+
 import axios from "axios";
 
 // ✅ Base API URL
 const API_BASE_URL: string = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:5000";
 
-// ✅ Create an axios instance
+// ✅ Create an Axios instance
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -11,24 +13,24 @@ const apiClient = axios.create({
   },
 });
 
-// ✅ Attach token to requests (if present)
+// ✅ Attach token to requests (if available)
 apiClient.interceptors.request.use((config) => {
   if (typeof window !== "undefined") {
     const token = localStorage.getItem("token");
-    if (token && config.headers) {
+    if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
   }
   return config;
 });
 
-// ✅ Error handler
+// ✅ Centralized error handler
 const handleApiError = (error: any) => {
   console.error("API Error:", error?.response?.data || error.message);
   throw error;
 };
 
-// ✅ Types
+// ✅ Interfaces
 export interface Campaign {
   _id: string;
   title: string;
@@ -46,12 +48,41 @@ export interface User {
   password: string;
 }
 
+// ✅ API Functions
 const api = {
-  // ✅ Campaign APIs
+  // Auth
+  registerUser: async (userData: User) => {
+    try {
+      const res = await apiClient.post("/api/auth/register", userData);
+      return res.data;
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
+
+  loginUser: async (credentials: { email: string; password: string }) => {
+    try {
+      const res = await apiClient.post("/api/auth/login", credentials);
+      return res.data;
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
+
+  getUserProfile: async () => {
+    try {
+      const res = await apiClient.get("/api/auth/profile");
+      return res.data;
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
+
+  // Campaigns
   fetchCampaigns: async () => {
     try {
-      const response = await apiClient.get("/api/campaigns");
-      return response.data;
+      const res = await apiClient.get("/api/campaigns");
+      return res.data;
     } catch (error) {
       handleApiError(error);
     }
@@ -59,17 +90,17 @@ const api = {
 
   fetchCampaignById: async (id: string) => {
     try {
-      const response = await apiClient.get(`/api/campaigns/${id}`);
-      return response.data;
+      const res = await apiClient.get(`/api/campaigns/${id}`);
+      return res.data;
     } catch (error) {
       handleApiError(error);
     }
   },
 
-  createCampaign: async (campaignData: Partial<Campaign>) => {
+  createCampaign: async (data: Partial<Campaign>) => {
     try {
-      const response = await apiClient.post("/api/campaigns", campaignData);
-      return response.data;
+      const res = await apiClient.post("/api/campaigns", data);
+      return res.data;
     } catch (error) {
       handleApiError(error);
     }
@@ -84,58 +115,30 @@ const api = {
     }
   },
 
-  // ✅ Donation APIs
+  // Donations
   donateToCampaign: async (campaignId: string, amount: number) => {
-  try {
-    console.log("Donating to:", campaignId, "Amount:", amount);
-    const response = await apiClient.post(`/api/donations/${campaignId}`, { amount });
-    return response.data;
-  } catch (error) {
-    handleApiError(error); // This will print exact backend error if set up properly
-  }
-},
+    try {
+      const res = await apiClient.post(`/api/donations/${campaignId}`, { amount });
+      return res.data;
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
+
   getUserDonations: async () => {
     try {
-      const response = await apiClient.get("/api/donations/user");
-      return response.data;
+      const res = await apiClient.get("/api/donations/user");
+      return res.data;
     } catch (error) {
       handleApiError(error);
     }
   },
 
-  // ✅ Auth APIs
-  registerUser: async (userData: User) => {
-    try {
-      const response = await apiClient.post("/api/auth/register", userData);
-      return response.data;
-    } catch (error) {
-      handleApiError(error);
-    }
-  },
-
-  loginUser: async (credentials: { email: string; password: string }) => {
-    try {
-      const response = await apiClient.post("/api/auth/login", credentials);
-      return response.data;
-    } catch (error) {
-      handleApiError(error);
-    }
-  },
-
-  getUserProfile: async () => {
-    try {
-      const response = await apiClient.get("/api/auth/profile");
-      return response.data;
-    } catch (error) {
-      handleApiError(error);
-    }
-  },
-
-  // ✅ Admin APIs
+  // Admin
   getAdminStats: async () => {
     try {
-      const response = await apiClient.get("/api/admin/stats");
-      return response.data;
+      const res = await apiClient.get("/api/admin/stats");
+      return res.data;
     } catch (error) {
       handleApiError(error);
     }
@@ -143,8 +146,8 @@ const api = {
 
   getAllDonations: async () => {
     try {
-      const response = await apiClient.get("/api/admin/donations");
-      return response.data;
+      const res = await apiClient.get("/api/admin/donations");
+      return res.data;
     } catch (error) {
       handleApiError(error);
     }
@@ -152,14 +155,14 @@ const api = {
 
   getCampaignDonationStats: async () => {
     try {
-      const response = await apiClient.get("/api/admin/campaign-stats");
-      return response.data;
+      const res = await apiClient.get("/api/admin/campaign-stats");
+      return res.data;
     } catch (error) {
       handleApiError(error);
     }
   },
 
-  // ✅ Charity Campaign Submission APIs
+  // Charity Submission
   submitCharityCampaign: async (data: Record<string, any>) => {
     try {
       const res = await apiClient.post("/api/campaigns/submit-charity", data);
@@ -182,6 +185,23 @@ const api = {
     try {
       const res = await apiClient.patch(`/api/admin/campaigns/${id}/approve`);
       return res.data;
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
+
+  getCurrentUser: async () => {
+  try {
+    const res = await apiClient.get("/api/auth/profile"); // or "/api/auth/me"
+    return res.data; // should include role
+  } catch (error) {
+    handleApiError(error);
+  }
+},
+  isAdmin: async () => {
+    try {
+      const res = await apiClient.get("/api/auth/is-admin");
+      return res.data; // should return true/false
     } catch (error) {
       handleApiError(error);
     }
