@@ -86,14 +86,14 @@ const api = {
 
   // ✅ Donation APIs
   donateToCampaign: async (campaignId: string, amount: number) => {
-    try {
-      const response = await apiClient.post(`/api/donations/${campaignId}`, { amount });
-      return response.data;
-    } catch (error) {
-      handleApiError(error);
-    }
-  },
-
+  try {
+    console.log("Donating to:", campaignId, "Amount:", amount);
+    const response = await apiClient.post(`/api/donations/${campaignId}`, { amount });
+    return response.data;
+  } catch (error) {
+    handleApiError(error); // This will print exact backend error if set up properly
+  }
+},
   getUserDonations: async () => {
     try {
       const response = await apiClient.get("/api/donations/user");
