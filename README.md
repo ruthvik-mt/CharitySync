@@ -47,53 +47,6 @@ A full-stack donation management system where users can discover charity campaig
 
 ---
 
-## 📂 Folder Structure
-
-project-root/
-├── backend/
-│ ├── controllers/
-│ ├── middleware/
-│ ├── models/
-│ ├── routes/
-│ └── server.ts
-├── frontend/
-│ ├── app/
-│ │ ├── auth/
-│ │ ├── campaign/
-│ │ ├── admin/
-│ │ └── layout.tsx
-│ ├── components/
-│ ├── styles/
-│ ├── types/
-│ └── utils/
-├── .env
-├── package.json
-└── README.md
-
-yaml
-Copy
-Edit
-
----
-
-## 🧪 Sample Users
-
-### 👤 Regular User
-Email: user@example.com
-Password: password123
-
-shell
-Copy
-Edit
-
-### 🛠️ Admin User
-Email: admin@example.com
-Password: admin123
-
-yaml
-Copy
-Edit
-
 ---
 
 ## 🛠️ Getting Started
@@ -103,35 +56,41 @@ Edit
 ```bash
 cd backend
 npm install
-Create a .env file in /backend:
+```
+Create a .env file in backend:
 
-env
-Copy
-Edit
+```bash
 PORT=5000
 MONGO_URI=mongodb://localhost:27017/donation-platform
 JWT_SECRET=your_secret_key
-Run the backend server:
+```
+Start the backend server:
 
-bash
-Copy
-Edit
+```bash
 npm run dev
-2. 💻 Frontend Setup
-bash
-Copy
-Edit
+```
+
+### 2. 💻 Frontend Setup
+
+```bash
 cd frontend
 npm install
-Create a .env.local file in /frontend:
+```
 
-env
-Copy
-Edit
-NEXT_PUBLIC_API_URL=http://localhost:5000/api
-Run the frontend app:
+Create a .env.local file in frontend:
 
-bash
-Copy
-Edit
+```bash
+NEXT_PUBLIC_API_URL=http://localhost:5000
+```
+
+Start the frontend development server:
+
+```bash
 npm run dev
+```
+
+
+---
+
+This project is licensed under the MIT License.
+
