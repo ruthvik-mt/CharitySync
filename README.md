@@ -1,4 +1,4 @@
-#  CharitySync
+#  DonorHub
 
 A **full-stack online donation platform** where users can explore campaigns and contribute, admins can manage donations and campaigns, and charities can submit new campaigns without registering.
 
