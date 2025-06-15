@@ -1,4 +1,4 @@
-#  DonorHub
+#  CharitySync
 
 A **full-stack online donation platform**.
 
@@ -17,12 +17,12 @@ A **full-stack online donation platform**.
 
 ##  Introduction
 
-**DonorHub** is a modern donation platform that connects generous users with causes that need support. Built with a robust tech stack, the platform enables:
+**CharitySync** is a modern donation platform that connects generous users with causes that need support. Built with a robust tech stack, the platform enables:
 - Users to browse and donate to campaigns
 - Admins to manage donations and submissions
 - Charities to publicly submit campaigns without needing an account
 
-Whether you're a donor, campaign manager, or admin, DonarHub provides a smooth, intuitive experience.
+Whether you're a donor, campaign manager, or admin, CharitySync provides a smooth, intuitive experience.
 
 ---
 
