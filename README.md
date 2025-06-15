@@ -1,50 +1,75 @@
-# CharitySync
-#### A full-stack online donation platform where users can discover charity campaigns and donate, admins can review submissions and track donations, and charities can submit new campaigns.
+#  CharitySync
+
+A **full-stack online donation platform** where users can explore campaigns and contribute, admins can manage donations and campaigns, and charities can submit new campaigns without registering.
+
 ---
+
+## 📑 Table of Contents
+
+- [Introduction](#introduction)
+- [Tech Stack](#tech-stack)
+- [Features](#features)
+- [Installation](#installation)
+  - [Backend Setup](#1-backend-setup)
+  - [Frontend Setup](#2-frontend-setup)
+- [License](#license)
+
+---
+
+## 📌 Introduction
+
+**CharitySync** is a modern donation platform that connects generous users with causes that need support. Built with a robust tech stack, the platform enables:
+- Users to browse and donate to campaigns
+- Admins to manage donations and submissions
+- Charities to publicly submit campaigns without needing an account
+
+Whether you're a donor, campaign manager, or admin, CharitySync provides a smooth, intuitive experience.
+
+---
+
 ## ⚙️ Tech Stack
 
 ### 💻 Frontend
-- **Next.js 14 (App Router)**
-- **React 18**
-- **TypeScript**
-- **Tailwind CSS**
-- **Axios**
-- **Zustand** for state management
+- Next.js 14 (App Router)
+- React 18
+- TypeScript
+- Tailwind CSS
+- Axios
+- Zustand (for state management)
 
 ### 🖥️ Backend
-- **Node.js**
-- **Express.js**
-- **TypeScript**
-- **Mongoose** (MongoDB ODM)
+- Node.js
+- Express.js
+- TypeScript
+- Mongoose (MongoDB ODM)
 
 ### 🔒 Authentication
-- **JWT-based Auth** (Register/Login)
-- **Role-based Access Control** (User / Admin)
+- JWT-based Auth (Login/Register)
+- Role-based Access Control (User/Admin)
 
 ---
 
 ## ✨ Features
 
 ### 👥 General Users
-- Register / Login with JWT
-- View approved donation campaigns
-- Donate to campaigns with a progress bar
+- Register and log in securely
+- View and donate to live campaigns
 - View personal donation history
-- Receive thank-you alerts after donating
+- See donation progress bars and get thank-you alerts
 
 ### 🧑‍💼 Admin Panel
-- Approve / delete pending campaigns
-- View all donations in a sortable table
-- View per-campaign donation stats
-- Admin-only protected routes
+- Approve or delete campaigns submitted by charities
+- View all donations in a sortable, filterable table
+- View statistics for each campaign's donations
+- Access protected admin-only routes
 
 ### 🏢 Charities / Public
-- Submit new campaign without logging in
-- Admin reviews and approves the campaign
+- Submit campaigns via a public form (no login required)
+- Await approval from admin before going live
 
 ---
 
-## 🛠️ Getting Started
+## 🛠️ Installation
 
 ### 1. 🔧 Backend Setup
 
@@ -84,8 +109,4 @@ Start the frontend development server:
 npm run dev
 ```
 
-
----
-
-This project is licensed under the MIT License.
 
