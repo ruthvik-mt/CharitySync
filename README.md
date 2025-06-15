@@ -1,9 +1,6 @@
 # CharitySync
-
-## A full-stack online donation platform where users can discover charity campaigns and donate, admins can review submissions and track donations, and charities can submit new campaigns.
-
+### A full-stack online donation platform where users can discover charity campaigns and donate, admins can review submissions and track donations, and charities can submit new campaigns.
 ---
-
 ## ⚙️ Tech Stack
 
 ### 💻 Frontend
@@ -44,8 +41,6 @@
 ### 🏢 Charities / Public
 - Submit new campaign without logging in
 - Admin reviews and approves the campaign
-
----
 
 ---
 
