@@ -4,7 +4,7 @@ A **full-stack online donation platform** where users can explore campaigns and 
 
 ---
 
-## 📑 Table of Contents
+##  Table of Contents
 
 - [Introduction](#introduction)
 - [Tech Stack](#tech-stack)
@@ -12,11 +12,10 @@ A **full-stack online donation platform** where users can explore campaigns and 
 - [Installation](#installation)
   - [Backend Setup](#1-backend-setup)
   - [Frontend Setup](#2-frontend-setup)
-- [License](#license)
 
 ---
 
-## 📌 Introduction
+##  Introduction
 
 **CharitySync** is a modern donation platform that connects generous users with causes that need support. Built with a robust tech stack, the platform enables:
 - Users to browse and donate to campaigns
@@ -27,9 +26,9 @@ Whether you're a donor, campaign manager, or admin, CharitySync provides a smoot
 
 ---
 
-## ⚙️ Tech Stack
+##  Tech Stack
 
-### 💻 Frontend
+###  Frontend
 - Next.js 14 (App Router)
 - React 18
 - TypeScript
@@ -37,41 +36,41 @@ Whether you're a donor, campaign manager, or admin, CharitySync provides a smoot
 - Axios
 - Zustand (for state management)
 
-### 🖥️ Backend
+###  Backend
 - Node.js
 - Express.js
 - TypeScript
 - Mongoose (MongoDB ODM)
 
-### 🔒 Authentication
+###  Authentication
 - JWT-based Auth (Login/Register)
 - Role-based Access Control (User/Admin)
 
 ---
 
-## ✨ Features
+##  Features
 
-### 👥 General Users
+###  General Users
 - Register and log in securely
 - View and donate to live campaigns
 - View personal donation history
 - See donation progress bars and get thank-you alerts
 
-### 🧑‍💼 Admin Panel
+###  Admin Panel
 - Approve or delete campaigns submitted by charities
 - View all donations in a sortable, filterable table
 - View statistics for each campaign's donations
 - Access protected admin-only routes
 
-### 🏢 Charities / Public
+###  Charities / Public
 - Submit campaigns via a public form (no login required)
 - Await approval from admin before going live
 
 ---
 
-## 🛠️ Installation
+## 🛠 Installation
 
-### 1. 🔧 Backend Setup
+### 1.  Backend Setup
 
 ```bash
 cd backend
@@ -90,7 +89,7 @@ Start the backend server:
 npm run dev
 ```
 
-### 2. 💻 Frontend Setup
+### 2.  Frontend Setup
 
 ```bash
 cd frontend
