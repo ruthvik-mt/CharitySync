@@ -68,7 +68,7 @@ Whether you're a donor, campaign manager, or admin, CharitySync provides a smoot
 
 ---
 
-## 🛠 Installation
+##  Installation
 
 ### 1.  Backend Setup
 
