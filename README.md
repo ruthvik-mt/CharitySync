@@ -1,6 +1,6 @@
 #  DonorHub
 
-A **full-stack online donation platform** 
+A **full-stack online donation platform**.
 
 ---
 
