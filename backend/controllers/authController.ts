@@ -14,13 +14,14 @@ const generateToken = (userId: string) => {
 // REGISTER
 export const registerUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { name, email, password } = req.body;
+    let { name, email, password } = req.body;
 
     if (!name || !email || !password) {
       res.status(400).json({ error: "Name, email, and password are required" });
       return;
     }
 
+    email = email.toLowerCase();
     const existing = await User.findOne({ email });
     if (existing) {
       res.status(400).json({ error: "User already exists" });
@@ -28,12 +29,20 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-
-    const user = new User({ name, email, password: hashedPassword }); // Include name
+    const user = new User({ name, email, password: hashedPassword });
     await user.save();
 
     const token = generateToken(user._id.toString());
-    res.status(201).json({ token });
+
+    res.status(201).json({
+      token,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
   } catch (error: any) {
     console.error("Registration error:", error);
     res.status(500).json({ error: "Registration failed", details: error.message });
@@ -43,7 +52,8 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
 // LOGIN
 export const loginUser = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { email, password } = req.body;
+    let { email, password } = req.body;
+    email = email.toLowerCase();
 
     const user = await User.findOne({ email });
     if (!user) {
@@ -51,7 +61,6 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       return;
     }
 
-    // Compare hashed password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       res.status(401).json({ error: "Invalid credentials" });
@@ -59,7 +68,16 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
     }
 
     const token = generateToken(user._id.toString());
-    res.status(200).json({ token });
+
+    res.status(200).json({
+      token,
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
   } catch (error) {
     res.status(500).json({ error: "Login failed", details: error });
   }

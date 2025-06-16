@@ -62,7 +62,7 @@ const SubmitCharityCampaign = () => {
       </button>
 
       <h1 className="text-3xl font-extrabold text-gray-800 mb-6">
-        Submit Charity Campaign
+        Charity Campaign
       </h1>
 
       {message && (

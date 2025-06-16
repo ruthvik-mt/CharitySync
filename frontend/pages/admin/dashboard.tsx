@@ -1,5 +1,7 @@
+"use client";
+
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import api from "../../utils/api";
 import Navbar from "../../components/Navbar";
 
@@ -42,29 +44,28 @@ export default function AdminDashboard() {
     }
 
     const fetchAdminData = async () => {
-  try {
-    const user = await api.getCurrentUser();
+      try {
+        const user = await api.getCurrentUser();
+        if (!user || user.role !== "admin") {
+          setError("Access denied. Admins only.");
+          return;
+        }
 
-    if (user.role !== "admin") {
-      setError("Access denied. Admins only.");
-      return;
-    }
+        const [statsRes, donationsRes, campaignStatsRes] = await Promise.all([
+          api.getAdminStats(),
+          api.getAllDonations(),
+          api.getCampaignDonationStats(),
+        ]);
 
-    const [statsRes, donationsRes, campaignStatsRes] = await Promise.all([
-      api.getAdminStats(),
-      api.getAllDonations(),
-      api.getCampaignDonationStats(),
-    ]);
-
-    setStats(statsRes);
-    setDonations(donationsRes);
-    setCampaignStats(campaignStatsRes);
-  } catch (err: any) {
-    setError("Unauthorized or failed to load admin data");
-  } finally {
-    setLoading(false);
-  }
-};
+        setStats(statsRes);
+        setDonations(donationsRes);
+        setCampaignStats(campaignStatsRes);
+      } catch (err: any) {
+        setError("Unauthorized or failed to load admin data");
+      } finally {
+        setLoading(false);
+      }
+    };
 
     fetchAdminData();
   }, [router]);
@@ -87,14 +88,23 @@ export default function AdminDashboard() {
     }
   };
 
-  if (loading) return <div className="p-6 text-center">Loading admin dashboard...</div>;
-  if (error) return <div className="p-6 text-red-600 text-center">{error}</div>;
+  if (loading) {
+    return <div className="p-6 text-center">Loading admin dashboard...</div>;
+  }
+
+  if (error) {
+    return (
+      <div className="p-6 text-center text-red-600 font-semibold">
+        {error}
+      </div>
+    );
+  }
 
   return (
     <div>
       <Navbar />
       <div className="max-w-6xl mx-auto py-8 px-6">
-        <h1 className="text-3xl font-bold mb-6">📊 Admin Dashboard</h1>
+        <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
 
         {/* Summary Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
@@ -106,7 +116,7 @@ export default function AdminDashboard() {
 
         {/* Donations Table */}
         <div className="bg-white border p-4 rounded shadow mb-8">
-          <h2 className="text-xl font-semibold mb-4">🧾 Recent Donations</h2>
+          <h2 className="text-xl font-semibold mb-4">Recent Donations</h2>
 
           <input
             type="text"
@@ -132,7 +142,9 @@ export default function AdminDashboard() {
                     <td className="px-4 py-2">{d.user.name}</td>
                     <td className="px-4 py-2">{d.campaign.title}</td>
                     <td className="px-4 py-2">₹{d.amount}</td>
-                    <td className="px-4 py-2">{new Date(d.createdAt).toLocaleString()}</td>
+                    <td className="px-4 py-2">
+                      {new Date(d.createdAt).toLocaleString()}
+                    </td>
                   </tr>
                 ))}
               </tbody>
@@ -142,10 +154,13 @@ export default function AdminDashboard() {
 
         {/* Campaign-wise Stats */}
         <div className="bg-white border p-4 rounded shadow">
-          <h2 className="text-xl font-semibold mb-4">📌 Campaign-wise Stats</h2>
+          <h2 className="text-xl font-semibold mb-4">Campaign-wise Stats</h2>
           <div className="space-y-3">
             {campaignStats.map((c) => (
-              <div key={c._id} className="flex justify-between items-center border-b pb-2">
+              <div
+                key={c._id}
+                className="flex justify-between items-center border-b pb-2"
+              >
                 <div>
                   <p className="font-semibold">{c.title}</p>
                   <p className="text-sm text-gray-600">
@@ -167,7 +182,13 @@ export default function AdminDashboard() {
   );
 }
 
-function StatCard({ label, value }: { label: string; value: number | string | undefined }) {
+function StatCard({
+  label,
+  value,
+}: {
+  label: string;
+  value: number | string | undefined;
+}) {
   return (
     <div className="bg-white shadow-md rounded p-4 border text-center">
       <h2 className="text-lg text-gray-700">{label}</h2>

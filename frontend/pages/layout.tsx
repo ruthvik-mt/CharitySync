@@ -8,7 +8,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     <>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Mentor Link</title>
+        <title>Donation Platform</title>
       </Head>
       <Component {...pageProps} />
     </>

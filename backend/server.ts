@@ -31,8 +31,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/campaigns", campaignRoutes);
 app.use('/api/donations', donationRoutes);
 app.use("/api/admin", adminRoutes);
-app.use("/api/admin", adminRoutes);
-
 // Health check
 app.get("/", (_req: Request, res: Response) => {
   res.send("API is running...");
